@@ -30,6 +30,7 @@ public class IndexResultController {
             return MessageUtil.success(categoryExService.findCategoryAndArticles(id));
         }catch (CustomerException e){
             return MessageUtil.error(StatusCodeUtil.ERRO_CODE,"获取数据错误");
+
         }
     }
 
