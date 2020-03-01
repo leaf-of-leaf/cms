@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.cms.mapper.CategoryExMapper">
+
+    <resultMap id="BaseMap" type="com.briup.cms.bean.ex.CategoryEx">
+        <id column="c_id" jdbcType="INTEGER" property="id" />
+        <result column="code" jdbcType="BIGINT" property="code" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <collection property="articles" ofType="com.briup.cms.bean.Article">
+            <id column="a_id" jdbcType="INTEGER" property="id" />
+            <result column="author" jdbcType="VARCHAR" property="author" />
+            <result column="clicktimes" jdbcType="INTEGER" property="clicktimes" />
+            <result column="content" jdbcType="VARCHAR" property="content" />
+            <result column="publishDate" jdbcType="DATE" property="publishdate" />
+            <result column="title" jdbcType="VARCHAR" property="title" />
+            <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+        </collection>
+    </resultMap>
+
+    <select id="findCategoryAndArticles" resultMap="BaseMap">
+
+        select *,c.id c_id,a.id a_id
+        from cms_category c
+        left join cms_article a
+        on a.category_id = c.id
+        where c.id = #{id}
+
+    </select>
+
+</mapper>
