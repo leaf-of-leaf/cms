@@ -54,7 +54,7 @@ public class CustomerController {
     public Message<String> deleteCustomer(Integer i){
         try{
             customerService.deleteCustomer(i);
-            return MessageUtil.success("删除更新");
+            return MessageUtil.success("删除成功");
         }catch (CustomerException e){
             return MessageUtil.error(StatusCodeUtil.ERRO_CODE,"删除失败:" + e.getMessage());
         }
@@ -64,7 +64,7 @@ public class CustomerController {
     @ApiOperation("查询所有顾客")
     public Message<Object> findAllCustomers(){
         List<Customer> customers = null;
-        return (customers = customerService.findAllCustomers()) == null ?
+        return (customers = customerService.findAllCustomers()).size() == 0 ?
                 MessageUtil.success("查询成功，数据为空") :
                 MessageUtil.success(customers);
     }

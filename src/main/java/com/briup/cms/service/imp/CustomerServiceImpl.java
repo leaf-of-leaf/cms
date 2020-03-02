@@ -26,8 +26,11 @@ public class CustomerServiceImpl implements ICustomerService {
     public void saveOrUpdateCustomer(Customer customer) throws CustomerException {
         if(customer == null) throw new CustomerException(StatusCodeUtil.ERRO_CODE,"customer为空");
         if(customer.getId() == null){
+
+            List<Customer> customers = customerMapper.selectByCustomerSelective(customer);
+            if(customers.size() != 0) throw new CustomerException(StatusCodeUtil.ERRO_CODE, "插入数据已存在");
+
             customerMapper.insert(customer);
-            return;
         }else if(customer.getId() < 0){
             throw new CustomerException(StatusCodeUtil.ERRO_CODE,"id < 0");
         }else customerMapper.updateByPrimaryKeySelective(customer);
@@ -42,7 +45,6 @@ public class CustomerServiceImpl implements ICustomerService {
         }else
             throw new CustomerException(StatusCodeUtil.ERRO_CODE,
                     id < 0 ? "id < 0" : "要删除的id不存在");
-
     }
 
     @Override

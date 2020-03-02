@@ -81,6 +81,22 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <!--自定义查找-->
+  <select id="selectByCustomerSelective" parameterType="com.briup.cms.bean.Customer" resultType="com.briup.cms.bean.Customer">
+
+    select * from cms_customer
+    <where>
+      <if test="username != null">
+        username = #{username} or
+      </if>
+      <if test="password != null">
+        password = #{password} or
+      </if>
+    </where>
+
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

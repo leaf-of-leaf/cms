@@ -3,8 +3,10 @@ package com.briup.cms.service.imp;
 import com.briup.cms.bean.ArticleExample;
 import com.briup.cms.bean.Category;
 import com.briup.cms.bean.CategoryExample;
+import com.briup.cms.bean.ex.CategoryEx;
 import com.briup.cms.mapper.ArticleMapper;
 import com.briup.cms.mapper.CategoryMapper;
+import com.briup.cms.mapper.ex.CategoryExMapper;
 import com.briup.cms.service.ICategoryService;
 import com.briup.cms.utils.CustomerException;
 import com.briup.cms.utils.StatusCodeUtil;
@@ -21,11 +23,20 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements ICategoryService {
 
+
     @Autowired(required = false)
     private CategoryMapper categoryMapper;
 
     @Autowired(required = false)
     private ArticleMapper articleMapper;
+
+    @Autowired(required = false)
+    private CategoryExMapper categoryExMapper;
+
+    @Override
+    public List<CategoryEx> findAllCategoryEx() throws CustomerException {
+        return categoryExMapper.findAllCategoryExs();
+    }
 
     @Override
     public void addOrUpdateCategory(Category category) throws CustomerException {
@@ -36,6 +47,9 @@ public class CategoryServiceImpl implements ICategoryService {
         修改时,mybatis为动态sql
          */
         if(category.getId() == null){
+
+            //插入判断，数据库中一样的数据
+
             categoryMapper.insert(category);
         }else if(category.getId() > 0 && categoryMapper.selectByPrimaryKey(category.getId()) != null){
             categoryMapper.updateByPrimaryKeySelective(category);
