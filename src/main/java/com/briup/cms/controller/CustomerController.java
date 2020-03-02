@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -78,5 +79,9 @@ public class CustomerController {
                 MessageUtil.success(customer);
     }
 
-
+    @GetMapping("/login")
+    @ApiOperation("HelloWorld接口")
+    public Message<Object> login(Customer customer){
+        return customerService.judge(customer) ? MessageUtil.success("成功登陆") : MessageUtil.error(500,"输入错误");
+    }
 }

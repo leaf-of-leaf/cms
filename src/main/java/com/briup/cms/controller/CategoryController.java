@@ -1,6 +1,7 @@
 package com.briup.cms.controller;
 
 import com.briup.cms.bean.Category;
+import com.briup.cms.bean.ex.CategoryEx;
 import com.briup.cms.service.imp.CategoryServiceImpl;
 import com.briup.cms.utils.CustomerException;
 import com.briup.cms.utils.Message;
@@ -71,6 +72,20 @@ public class CategoryController {
             return MessageUtil.success("修改成功");
         }catch (CustomerException e){
             return MessageUtil.error(500, "修改失败:" + e.getMessage());
+        }
+    }
+
+    @GetMapping("/findCategoryAndArticles")
+    @ApiOperation("找到相应栏目以及对应的文章")
+    public Message<Object> findCategoryEx(String name){
+        CategoryEx categoryEx = null;
+        try{
+            return (categoryEx = categoryService.findCategoryEx(name)) == null?
+                    MessageUtil.success("查询成功，但不存在对应栏目"):
+                    //查询栏目下文章的属性 有 id,author,title,clicktimes,publishdate
+                    MessageUtil.success(categoryEx);
+        } catch (CustomerException e){
+            return MessageUtil.error(500,"查询错误：" + e.getMessage());
         }
     }
 }

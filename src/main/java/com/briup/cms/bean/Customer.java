@@ -2,14 +2,24 @@ package com.briup.cms.bean;
 
 import io.swagger.annotations.ApiParam;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
+
+//表示是一个实体类
+@Entity
+//对应数据库中表的字段名
+@Table(name = "cms_customer")
 public class Customer implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true, nullable = false)
     @ApiParam(value = "账号", required = true)
     private String username;
 
+    @Column(nullable = false)
     @ApiParam(value = "密码", required = true)
     private String password;
 

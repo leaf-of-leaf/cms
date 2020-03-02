@@ -30,4 +30,6 @@ public interface ICustomerService {
      * @return
      */
     Customer findCustomerById(Integer i) throws CustomerException;
+
+    Boolean judge(Customer customer);
 }

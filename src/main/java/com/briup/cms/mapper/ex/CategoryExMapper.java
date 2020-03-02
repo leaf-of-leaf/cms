@@ -15,4 +15,6 @@ public interface CategoryExMapper {
      */
     List<CategoryEx> findAllCategoryExs();
 
+    CategoryEx findCategoryEx(String name);
+
 }

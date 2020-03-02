@@ -34,7 +34,14 @@ public class CategoryServiceImpl implements ICategoryService {
     private CategoryExMapper categoryExMapper;
 
     @Override
+    public CategoryEx findCategoryEx(String name) throws CustomerException {
+        if(name == null) throw new CustomerException(StatusCodeUtil.ERRO_CODE,"name为空");
+        else return categoryExMapper.findCategoryEx(name);
+    }
+
+    @Override
     public List<CategoryEx> findAllCategoryEx() throws CustomerException {
+
         return categoryExMapper.findAllCategoryExs();
     }
 
@@ -78,4 +85,6 @@ public class CategoryServiceImpl implements ICategoryService {
     public List<Category> findAllCategorys() throws CustomerException {
         return categoryMapper.selectByExample(new CategoryExample());
     }
+
+
 }

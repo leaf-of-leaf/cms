@@ -100,7 +100,11 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public Article findArticleById(int id) throws CustomerException {
         Article article = articleMapper.selectByPrimaryKey(id);
-        article.setClicktimes(article.getClicktimes() + 1);
+
+        Integer clickTimes =
+                article.getClicktimes() == null ? 0 : article.getClicktimes();
+
+        article.setClicktimes(clickTimes + 1);
         articleMapper.updateByPrimaryKeySelective(article);
         return article;
     }

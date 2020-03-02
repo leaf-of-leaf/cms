@@ -5,16 +5,35 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="code" jdbcType="BIGINT" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <collection property="articles" ofType="com.briup.cms.bean.Article">
-      <id column="id" jdbcType="INTEGER" property="id" />
-      <result column="author" jdbcType="VARCHAR" property="author" />
-      <result column="clicktimes" jdbcType="INTEGER" property="clicktimes" />
-      <result column="content" jdbcType="VARCHAR" property="content" />
-      <result column="publishDate" jdbcType="DATE" property="publishdate" />
-      <result column="title" jdbcType="VARCHAR" property="title" />
-      <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <collection property="articles" ofType="com.briup.cms.bean.Article"
+                column="id" select="selectAllArticleByCategoryId">
     </collection>
   </resultMap>
 
+  <resultMap id="ResultMap" type="com.briup.cms.bean.ex.CategoryEx">
+    <id column="c_id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="BIGINT" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <collection property="articles" ofType="com.briup.cms.bean.Article">
+      <id column="a_id" jdbcType="INTEGER" property="id" />
+      <result column="author" jdbcType="VARCHAR" property="author" />
+      <result column="clicktimes" jdbcType="INTEGER" property="clicktimes" />
+      <result column="title" jdbcType="VARCHAR" property="title" />
+      <result column="publishDate" jdbcType="DATE" property="publishdate" />
+    </collection>
+  </resultMap>
+
+<select id="findAllCategoryExs" resultMap="BaseResultMap">
+  select id,name,code from cms_category
+</select>
+
+  <!--查询单个栏目以及文章标题，点击率。。。。-->
+  <select id="findCategoryEx" resultMap="ResultMap">
+    select *,c.id c_id,a.id a_id from cms_category c left join cms_article a on c.id = a.category_id where name = #{name}
+  </select>
+
+<select id="selectAllArticleByCategoryId" resultType="com.briup.cms.bean.Article">
+  select * from cms_article where category_id = #{id}
+</select>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.briup.cms.service.imp;
 
 import com.briup.cms.bean.Customer;
 import com.briup.cms.bean.CustomerExample;
+import com.briup.cms.dao.CustomerDao;
 import com.briup.cms.mapper.CustomerMapper;
 import com.briup.cms.service.ICustomerService;
 import com.briup.cms.utils.CustomerException;
@@ -22,13 +23,18 @@ public class CustomerServiceImpl implements ICustomerService {
     @Autowired(required = false)
     private CustomerMapper customerMapper;
 
+    @Autowired(required = false)
+    private CustomerDao customerDao;
+
     @Override
     public void saveOrUpdateCustomer(Customer customer) throws CustomerException {
         if(customer == null) throw new CustomerException(StatusCodeUtil.ERRO_CODE,"customer为空");
         if(customer.getId() == null){
 
-            List<Customer> customers = customerMapper.selectByCustomerSelective(customer);
-            if(customers.size() != 0) throw new CustomerException(StatusCodeUtil.ERRO_CODE, "插入数据已存在");
+            CustomerExample customerExample = new CustomerExample();
+            customerExample.createCriteria().andUsernameEqualTo(customer.getUsername());
+            List<Customer> customers = customerMapper.selectByExample(customerExample);
+            if(customers.size() != 0) throw new CustomerException(StatusCodeUtil.ERRO_CODE, "插入数据，对应账号已存在");
 
             customerMapper.insert(customer);
         }else if(customer.getId() < 0){
@@ -55,5 +61,14 @@ public class CustomerServiceImpl implements ICustomerService {
     @Override
     public Customer findCustomerById(Integer i) throws CustomerException {
         return i != null ? customerMapper.selectByPrimaryKey(i) : null;
+    }
+
+    @Override
+    public Boolean judge(Customer customer) {
+
+        Customer customer1 = customerDao.findCustomerByUsernameAndPassword(customer.getUsername(), customer.getPassword());
+
+        return customer1 == null ? false : true;
+
     }
 }

@@ -37,4 +37,6 @@ public interface ICategoryService {
      * @throws CustomerException
      */
     List<CategoryEx> findAllCategoryEx() throws CustomerException;
+
+    CategoryEx findCategoryEx(String name) throws CustomerException;
 }
