@@ -31,5 +31,7 @@ public interface ICustomerService {
      */
     Customer findCustomerById(Integer i) throws CustomerException;
 
-    Boolean judge(Customer customer);
+    Boolean login(Customer customer);
+
+    void register(Customer customer);
 }

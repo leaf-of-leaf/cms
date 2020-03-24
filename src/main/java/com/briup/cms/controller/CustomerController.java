@@ -82,6 +82,15 @@ public class CustomerController {
     @GetMapping("/login")
     @ApiOperation("HelloWorld接口")
     public Message<Object> login(Customer customer){
-        return customerService.judge(customer) ? MessageUtil.success("成功登陆") : MessageUtil.error(500,"输入错误");
+        return customerService.login(customer) ? MessageUtil.success("成功登陆") : MessageUtil.error(500,"输入错误");
     }
+
+    @PostMapping("/register")
+    @ApiOperation("注册用户")
+    public Message<String> register(Customer customer){
+        customerService.register(customer);
+        return MessageUtil.success("注册成功");
+    }
+
+
 }

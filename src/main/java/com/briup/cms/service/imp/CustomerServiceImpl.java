@@ -64,11 +64,19 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public Boolean judge(Customer customer) {
+    public Boolean login(Customer customer) {
 
         Customer customer1 = customerDao.findCustomerByUsernameAndPassword(customer.getUsername(), customer.getPassword());
 
         return customer1 == null ? false : true;
+    }
 
+    @Override
+    public void register(Customer customer) {
+        if(customer == null || customer.getUsername() == null || customer.getPassword() == null)
+            throw new CustomerException(500,"注册失败，信息为空");
+        if(customerDao.findCustomerByUsername(customer.getUsername()) == null)
+        customerDao.save(customer);
+        else throw new CustomerException(500,"注册失败，已存在此账户");
     }
 }
